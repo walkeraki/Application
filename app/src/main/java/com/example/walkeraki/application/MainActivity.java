@@ -18,7 +18,7 @@ import java.io.StringWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-
+//lava je vroča
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             //connection.addRequestProperty("x-api-key", "4ce55cc86a3095785f34052c7a698a4f");
 
             InputStream is = new BufferedInputStream(connection.getInputStream());
-            
+
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
 
             StringBuffer json = new StringBuffer(1024);
