@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,11 +35,20 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-
+    private Button next;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        next = (Button) findViewById(R.id.button2);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendMessage(v);
+            }
+
+        });
         Intent intent = getIntent();
         String message = intent.getStringExtra(AddingCities.EXTRA_MESSAGE);
         Toast.makeText(getApplicationContext(), ""+message, Toast.LENGTH_LONG).show();
@@ -142,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    public void sendMessage(View view) {
+        Intent intent = new Intent(this, AddingCities.class);
+        startActivity(intent);
+    }
 
 }
