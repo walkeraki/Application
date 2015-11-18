@@ -1,5 +1,8 @@
 package com.example.walkeraki.application;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,9 +19,10 @@ import java.util.ArrayList;
  * Created by walkeraki on 17.11.2015.
  */
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
-    private ArrayList<MyPojo> pojos;
+    private ArrayList<String> pojos;
     private static final String TAG = "MyActivity";
     private TextView displayTextView;
+    private Context ime;
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -32,8 +36,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(ArrayList<MyPojo>pojos) {
+    public MyAdapter(ArrayList<String>pojos,Context ime) {
         this.pojos = pojos;
+        this.ime = ime;
+
     }
 
     // Create new views (invoked by the layout manager)
@@ -58,19 +64,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         TextView title= (TextView) holder.View.findViewById(R.id.title);
         TextView description= (TextView) holder.View.findViewById(R.id.description);
 
-        title.setText(pojos.get(position).getTitle());
-        description.setText(pojos.get(position).getDescribtion());
+        title.setText(pojos.get(position));
+
 
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Log.v(TAG, "index="+pojos.get(position).getTitle());
+                Intent intent = new Intent(ime, CityInfo.class);
+                intent.putExtra("keys",pojos.get(position));
+                Log.v(TAG, "index=" + pojos.get(position));
+                ime.startActivity(intent);
             }
 
 
         });
     }
+
 
                 // Return the size of your dataset (invoked by the layout manager)
         @Override

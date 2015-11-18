@@ -37,7 +37,15 @@ public class AddingCities extends Activity {
         Intent intent = new Intent(this, MainActivity.class);
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
-        list.add(0, message);
+        list.add(message);
+        SharedPreferences sharedPref = getSharedPreferences("keys",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        Set<String> set = new HashSet<String>();
+        set=sharedPref.getStringSet("keys",new HashSet<String>());
+        set.add(message);
+        editor.putStringSet("keys", set);
+        editor.apply();
+
 
 
         /*SharedPreferences sharedPref = getSharedPreferences("tocke",MODE_PRIVATE);
@@ -66,19 +74,7 @@ public class AddingCities extends Activity {
         Toast.makeText(getApplicationContext(), ""+i, Toast.LENGTH_LONG).show();
         */
 
-        try {
-            //Modes: MODE_PRIVATE, MODE_WORLD_READABLE, MODE_WORLD_WRITABLE
-            FileOutputStream output = openFileOutput("lines.txt",MODE_WORLD_READABLE);
-            DataOutputStream dout = new DataOutputStream(output);
-            dout.writeInt(list.size()); // Save line count
 
-            for(String line : list)  // Save lines
-                dout.writeUTF(line);
-            dout.flush(); // Flush stream ...
-            dout.close(); // ... and close.
-
-        }
-        catch (IOException exc) { exc.printStackTrace(); }
         //intent.putStringArrayListExtra("array", list);
         //intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
