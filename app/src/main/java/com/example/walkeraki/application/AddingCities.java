@@ -28,16 +28,24 @@ public class AddingCities extends Activity {
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
         list.add(message);
-        SharedPreferences sharedPref = getSharedPreferences("keys",MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences("keys", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Set<String> set = new HashSet<String>();
+        Set<String> set3 = new HashSet<String>();
+
         set=sharedPref.getStringSet("keys",new HashSet<String>());
-        set.add(message);
-        editor.putStringSet("keys", set);
+        Object[] set2 = set.toArray ();
+        for(int m=0;m<set.size();m++)
+        {
+            set3.add((String) set2[m]);
+
+        }
+        set3.add(message);
+        editor.putStringSet("keys", set3);
         editor.apply();
         startActivity(intent);
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
