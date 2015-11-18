@@ -22,6 +22,11 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
@@ -36,10 +41,33 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Button next;
+    ArrayList<String> list = new ArrayList<String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        try {
+            FileInputStream input = openFileInput("lines.txt"); // Open input stream
+            DataInputStream din = new DataInputStream(input);
+            int sz = din.readInt(); // Read line count
+            for (int i=0;i<sz;i++) { // Read lines
+                String line = din.readUTF();
+                list.add(line);
+
+            }
+            din.close();
+        }
+        catch (IOException exc) { exc.printStackTrace(); }
+
+        //Intent intent = getIntent();
+        //list = intent.getStringArrayListExtra("array");
+
+       /* SharedPreferences sharedPref = getSharedPreferences("tocke",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("tocke", 1000);
+        editor.commit();
+        */
 
         next = (Button) findViewById(R.id.button2);
         next.setOnClickListener(new View.OnClickListener() {
@@ -49,25 +77,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(AddingCities.EXTRA_MESSAGE);
-        Toast.makeText(getApplicationContext(), ""+message, Toast.LENGTH_LONG).show();
+       // Intent intent = getIntent();
+        //String message = intent.getStringExtra(AddingCities.EXTRA_MESSAGE);
+        Toast.makeText(getApplicationContext(), ""+list, Toast.LENGTH_LONG).show();
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+
         mRecyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
+
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // specify an adapter (see also next example)
+
         ArrayList<MyPojo> pojos= new ArrayList<MyPojo>();
-        for(int i=0;i<20;i++)
+        for(int i=0;i<list.size();i++)
         {
+            String item = list.get(i);
             pojos.add(new MyPojo(
-            "title"+i,
+            ""+item,
             "This is description text"
             ));
 
@@ -97,18 +125,8 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        //shranjevanje
 
-        /*SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("tocke", 1000);
-        editor.commit();*/
 
-        //klicanje shranjevanja
-        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
-        long highScore = sharedPref.getInt("tocke", 500);
-
-        Log.e("tocke", highScore + "");
     }
 
     private static final String OPEN_WEATHER_MAP_API =
@@ -155,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void sendMessage(View view) {
         Intent intent = new Intent(this, AddingCities.class);
+
         startActivity(intent);
     }
 
