@@ -73,7 +73,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 Intent intent = new Intent(ime, CityInfo.class);
                 intent.putExtra("keys",pojos.get(position));
                 notifyItemRemoved(position);
-                Log.v(TAG, "index=" + pojos.get(position));
+                //Log.v(TAG, "index=" + pojos.get(position));
                 ime.startActivity(intent);
             }
 
@@ -93,11 +93,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             JSONObject details = weather.getJSONArray("weather").getJSONObject(0);
             JSONObject main = weather.getJSONObject("main");
             temp.setText("Temperature: "+(main.getInt("temp")- 273)+"C");
-            Log.e("test", details.getString("main") + "");
+            /*Log.e("test", details.getString("main") + "");
             Log.e("name",main.getString("humidity"));
             Log.e("name",name);
+            */
         }catch(Exception e){
-            Log.e("SimpleWeather", "One or more fields not found in the JSON data");
+            Log.e("Error", "Not found");
         }
     }
 
@@ -105,8 +106,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
 
 
-    private static final String OPEN_WEATHER_MAP_API =
-            "";
+    private static final String OPEN_WEATHER_MAP_API = "";
     private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
     private static String IMG_URL = "http://openweathermap.org/img/w/";
 
@@ -128,7 +128,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             String tmp = "";
             while ((tmp = reader.readLine()) != null){
                 json.append(tmp).append("\n");
-                Log.e("Some website", tmp);
+                //Log.e("Some website", tmp);
             }
             reader.close();
 
@@ -141,7 +141,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
             return data;
         }catch(Exception e){
-            Log.e("error", "ssdsd" + e.getStackTrace() );
+            //Log.e("error", "ssdsd" + e.getStackTrace() );
             return null;
         }
     }

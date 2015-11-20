@@ -31,10 +31,9 @@ private String mesto="";
         Bundle extras = getIntent().getExtras();
         mesto= extras.getString("keys","lol");
         Toast.makeText(getApplicationContext(), "" + mesto, Toast.LENGTH_LONG).show();
-        Log.e("nameasdf", mesto);
+        //Log.e("nameasdf", mesto);
         TextView text1 = (TextView)findViewById(R.id.textView1);
-        TextView text2 = (TextView)findViewById(R.id.textView2);
-        TextView text3 = (TextView)findViewById(R.id.textView3);
+
 
 
     if (android.os.Build.VERSION.SDK_INT > 9) {
@@ -51,14 +50,28 @@ private String mesto="";
         JSONObject main = weather.getJSONObject("main");
         JSONObject wind = weather.getJSONObject("wind");
         JSONObject sys = weather.getJSONObject("sys");
-        text1.setText("Humidity: "+main.getString("humidity")+"\n"+"Temperature: "+(main.getInt("temp")- 273)+"\n"+"Sea level: "+main.getString("sea_level"));
-        text2.setText("Wind speed: "+wind.getString("speed"));
-        text3.setText("Country: "+sys.getString("country")+"\n"+"Name: "+weather.getString("name"));
-        Log.e("test", details.getString("main") + "");
+        JSONObject coord = weather.getJSONObject("coord");
+        text1.setText("Humidity: "+main.getString("humidity")+"\n"+"Temperature: "
+                +(main.getInt("temp")- 273)+"\n"+"Sea level: "
+                +main.getString("sea_level")+"\nWind speed: "
+                +wind.getString("speed")+"\nCountry: "
+                +sys.getString("country")+"\n"+"Name: "
+                +weather.getString("name")+"\n"+"Longitude: "
+                +coord.getString("lon")+"\n"+"Latitude: "
+                +coord.getString("lat")+"\n"+"Weather: "
+                +details.getString("main")+"\n"+"Description: "
+                +details.getString("description")+"\n"+"Pressure: "
+                +main.getString("pressure")+"\n"+"Ground level: "
+                +main.getString("grnd_level")+"\n"+"Wind degree: "
+                +wind.getString("deg"));
+
+
+       /* Log.e("test", details.getString("main") + "");
         Log.e("name",main.getString("humidity"));
         Log.e("name",name);
+        */
     }catch(Exception e){
-        Log.e("SimpleWeather", "One or more fields not found in the JSON data");
+        Log.e("Error", "Not found");
     }
 
 
@@ -66,8 +79,7 @@ private String mesto="";
 
 }
 
-private static final String OPEN_WEATHER_MAP_API =
-        "";
+private static final String OPEN_WEATHER_MAP_API = "";
 private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
 private static String IMG_URL = "http://openweathermap.org/img/w/";
 
@@ -89,7 +101,7 @@ private static String IMG_URL = "http://openweathermap.org/img/w/";
             String tmp = "";
             while ((tmp = reader.readLine()) != null){
                 json.append(tmp).append("\n");
-                Log.e("Some website", tmp);
+               // Log.e("Some website", tmp);
             }
             reader.close();
 
@@ -102,7 +114,7 @@ private static String IMG_URL = "http://openweathermap.org/img/w/";
 
             return data;
         }catch(Exception e){
-            Log.e("error", "ssdsd" + e.getStackTrace() );
+           // Log.e("error", "ssdsd" + e.getStackTrace() );
             return null;
         }
     }

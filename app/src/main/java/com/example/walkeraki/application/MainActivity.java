@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity  {
 
         mAdapter = new MyAdapter(pojos, this);
         mRecyclerView.setAdapter(mAdapter);
-        Toast.makeText(getApplicationContext(), ""+set, Toast.LENGTH_LONG).show();
+       // Toast.makeText(getApplicationContext(), ""+set, Toast.LENGTH_LONG).show();
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
