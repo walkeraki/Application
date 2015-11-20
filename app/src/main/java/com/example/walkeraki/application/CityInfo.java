@@ -75,11 +75,11 @@ private static String IMG_URL = "http://openweathermap.org/img/w/";
     //dobivanje erraya
     public static JSONObject getJSON(Context context, String city){
         try {
-            // URL url = new URL(String.format(OPEN_WEATHER_MAP_API, city));
+
             URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q="+city+",uk&appid=4ce55cc86a3095785f34052c7a698a4f");
             URLConnection connection = (URLConnection) url.openConnection();
 
-            //connection.addRequestProperty("x-api-key", "4ce55cc86a3095785f34052c7a698a4f");
+
 
             InputStream is = new BufferedInputStream(connection.getInputStream());
 
@@ -95,8 +95,7 @@ private static String IMG_URL = "http://openweathermap.org/img/w/";
 
             JSONObject data = new JSONObject(json.toString());
 
-            // This value will be 404 if the request was not
-            // successful
+
             if(data.getInt("cod") != 200){
                 return null;
             }

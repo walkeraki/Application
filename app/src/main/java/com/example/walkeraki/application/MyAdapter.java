@@ -1,18 +1,23 @@
 package com.example.walkeraki.application;
-
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 /**
@@ -23,11 +28,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private static final String TAG = "MyActivity";
     private TextView displayTextView;
     private Context ime;
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
+
+
+    public static class ViewHolder extends RecyclerView.ViewHolder  {
+
         public View View;
         public ViewHolder(View v) {
             super(v);
@@ -35,55 +39,115 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
+
     public MyAdapter(ArrayList<String>pojos,Context ime) {
         this.pojos = pojos;
         this.ime = ime;
 
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
-    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
-                                                   int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.row, parent, false);
-        // set the view's size, margins, paddings and layout parameters
+    public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
         ViewHolder vh = new ViewHolder(v);
+
         return vh;
     }
+    public void removeItem(int position) {
+        pojos.remove(position);
+        notifyItemRemoved(position);
+    }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         TextView title= (TextView) holder.View.findViewById(R.id.title);
-        TextView description= (TextView) holder.View.findViewById(R.id.description);
+        TextView temp= (TextView) holder.View.findViewById(R.id.temp);
+
 
         title.setText(pojos.get(position));
-
-
         title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ime, CityInfo.class);
                 intent.putExtra("keys",pojos.get(position));
+                notifyItemRemoved(position);
                 Log.v(TAG, "index=" + pojos.get(position));
                 ime.startActivity(intent);
             }
 
 
         });
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        //dobivanje podatkov iz massive arraya
+        try {
+            JSONObject weather = getJSON(pojos.get(position));
+
+            String name = weather.getString("name");
+            JSONObject details = weather.getJSONArray("weather").getJSONObject(0);
+            JSONObject main = weather.getJSONObject("main");
+            temp.setText("Temperature: "+(main.getInt("temp")- 273)+"C");
+            Log.e("test", details.getString("main") + "");
+            Log.e("name",main.getString("humidity"));
+            Log.e("name",name);
+        }catch(Exception e){
+            Log.e("SimpleWeather", "One or more fields not found in the JSON data");
+        }
     }
 
 
-                // Return the size of your dataset (invoked by the layout manager)
+
+
+
+    private static final String OPEN_WEATHER_MAP_API =
+            "";
+    private static String BASE_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+    private static String IMG_URL = "http://openweathermap.org/img/w/";
+
+
+    //dobivanje erraya
+    public static JSONObject getJSON(String city){
+        try {
+
+            URL url = new URL("http://api.openweathermap.org/data/2.5/weather?q="+city+",uk&appid=4ce55cc86a3095785f34052c7a698a4f");
+            URLConnection connection = (URLConnection) url.openConnection();
+
+
+
+            InputStream is = new BufferedInputStream(connection.getInputStream());
+
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+
+            StringBuffer json = new StringBuffer(1024);
+            String tmp = "";
+            while ((tmp = reader.readLine()) != null){
+                json.append(tmp).append("\n");
+                Log.e("Some website", tmp);
+            }
+            reader.close();
+
+            JSONObject data = new JSONObject(json.toString());
+
+
+            if(data.getInt("cod") != 200){
+                return null;
+            }
+
+            return data;
+        }catch(Exception e){
+            Log.e("error", "ssdsd" + e.getStackTrace() );
+            return null;
+        }
+    }
         @Override
     public int getItemCount() {
         return pojos.size();
     }
+
 }

@@ -28,6 +28,7 @@ public class AddingCities extends Activity {
         EditText editText = (EditText) findViewById(R.id.editText);
         String message = editText.getText().toString();
         list.add(message);
+        //shranjevanje array in igranje z podatkovnimi tipi
         SharedPreferences sharedPref = getSharedPreferences("keys", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Set<String> set = new HashSet<String>();
@@ -65,37 +66,3 @@ public class AddingCities extends Activity {
 
 
 }
-  /*SharedPreferences sharedPref = getSharedPreferences("tocke",MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("tocke", value);
-        editor.commit();
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt("value_key", i);
-        Toast.makeText(getApplicationContext(), ""+highScore, Toast.LENGTH_LONG).show();
-        editor.commit();
-        value++;
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putInt("value", value).commit();
-
-
-        /*SharedPreferences sp = getSharedPreferences("st", Activity.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putInt("st", i);
-        editor.commit();
-
-        SharedPreferences prefs = getSharedPreferences("st", MODE_PRIVATE);
-        Integer i = prefs.getInt("st", 0);
-
-        i++;
-        Toast.makeText(getApplicationContext(), ""+i, Toast.LENGTH_LONG).show();
-        */
-
-
-//intent.putStringArrayListExtra("array", list);
-//intent.putExtra(EXTRA_MESSAGE, message);
-
-/*SharedPreferences prefs = getSharedPreferences("mesto", MODE_PRIVATE);
-        String[] tocke = prefs.getString("mesto", "");
-        Log.e("tocke", tocke + "");
-        */
