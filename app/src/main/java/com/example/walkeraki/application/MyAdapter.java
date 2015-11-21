@@ -145,7 +145,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             return null;
         }
     }
-        @Override
+    @Override
     public int getItemCount() {
         return pojos.size();
     }

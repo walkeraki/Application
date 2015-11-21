@@ -60,14 +60,14 @@ public class MainActivity extends AppCompatActivity  {
         SharedPreferences.Editor editor = sharedPref.edit();
         Set<String> set = new HashSet<String>();
         set = sharedPref.getStringSet("keys", new HashSet<String>());
-        final ArrayList<String> pojos = new ArrayList<>();
+        ArrayList<String> pojos = new ArrayList<>();
 
         for (String str : set)
             pojos.add(str);
 
         mAdapter = new MyAdapter(pojos, this);
         mRecyclerView.setAdapter(mAdapter);
-       // Toast.makeText(getApplicationContext(), ""+set, Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), ""+set, Toast.LENGTH_LONG).show();
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
